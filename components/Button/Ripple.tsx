@@ -28,13 +28,14 @@ const useDebouncedRippleCleanUp = (
   useLayoutEffect(() => {
     let bounce: any = null
     if (rippleCount > 0) {
-      clearTimeout(bounce)
-      bounce = setTimeout(() => {
+      clearTimeout(bounce) 
+      bounce = setTimeout(() => { 
         cleanUpFunction()
+        return clearTimeout(bounce)
       }, duration * 4)
-    }
-
-    return clearTimeout(bounce)
+    } else {
+      return clearTimeout(bounce)
+    } 
   }, [rippleCount, duration, cleanUpFunction])
 }
 
@@ -62,18 +63,11 @@ const Ripples = ({ duration = 850 }) => {
     }
 
     setRippleArray((prevState: RippleProps[]) => [...prevState, newRipple])
-  }
-
-  //   const removeRipples = () => {
-  //     setTimeout(() => {
-  //       setRippleArray([])
-  //     }, 3000)
-  //   }
+  } 
 
   return (
     <RippleContainer
-      onPointerDown={addRipple}
-      //  onPointerUp={removeRipples}
+      onPointerDown={addRipple} 
     >
       {rippleArray.length > 0 &&
         rippleArray.map((ripple, index) => (
