@@ -2,6 +2,14 @@ import tw, { styled, css } from 'twin.macro'
 import { ButtonStyleProps } from './types'
 
 const generalButtonStyles = () => [
+  css`
+    @keyframes ripple {
+      to {
+        opacity: 0;
+        transform: scale(2);
+      }
+    }
+  `,
   tw`overflow-hidden select-none px-8 py-2 rounded flex items-center justify-center outline-none transform duration-75 text-white hocus:(scale-105 text-yellow-400)`,
 ]
 
@@ -43,9 +51,8 @@ const handleAllButtonStyles = () => [
   generalButtonStyles,
   handleButtonVariant,
   handleButtonVsTextOnly,
-  handleButtonSize, 
-  css`
-    -webkit-tap-highlight-color: transparent;
+  handleButtonSize,
+  css` 
     @keyframes ripple {
       to {
         transform: scale(4);

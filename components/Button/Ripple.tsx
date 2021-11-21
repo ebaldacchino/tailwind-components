@@ -9,16 +9,10 @@ interface RippleProps {
 
 const RippleContainer = styled.div`
   ${tw`absolute inset-0`}
-  @keyframes ripple {
-    to {
-      opacity: 0;
-      transform: scale(2);
-    }
-  }
 `
 
 const Ripple = styled.span`
-  ${tw`absolute rounded-[100%] opacity-25 bg-white animate-[ripple 850ms]`}
+  ${tw`absolute pointer-events-none rounded-[100%] opacity-25 bg-white animate-[ripple 850ms]`}
   transform: scale(0);
   left: ${props => props.x}px;
   top: ${props => props.y}px;
@@ -26,7 +20,11 @@ const Ripple = styled.span`
   height: ${props => props.size}px;
 `
 
-const useDebouncedRippleCleanUp = (rippleCount: number, duration: number, cleanUpFunction: Function) => {
+const useDebouncedRippleCleanUp = (
+  rippleCount: number,
+  duration: number,
+  cleanUpFunction: Function,
+) => {
   useLayoutEffect(() => {
     let bounce: any = null
     if (rippleCount > 0) {
@@ -66,15 +64,16 @@ const Ripples = ({ duration = 850 }) => {
     setRippleArray((prevState: RippleProps[]) => [...prevState, newRipple])
   }
 
-//   const removeRipples = () => {
-//     setTimeout(() => {
-//       setRippleArray([])
-//     }, 3000)
-//   }
+  //   const removeRipples = () => {
+  //     setTimeout(() => {
+  //       setRippleArray([])
+  //     }, 3000)
+  //   }
 
   return (
-    <RippleContainer onPointerDown={addRipple}
-    //  onPointerUp={removeRipples}
+    <RippleContainer
+      onPointerDown={addRipple}
+      //  onPointerUp={removeRipples}
     >
       {rippleArray.length > 0 &&
         rippleArray.map((ripple, index) => (
