@@ -1,7 +1,7 @@
 import tw, { styled, css } from 'twin.macro'
 import { ButtonStyleProps } from './types'
 
-const generalButtonStyles = () => [
+export const generalButtonStyles = () => [
   css`
     @keyframes ripple {
       to {
@@ -13,7 +13,7 @@ const generalButtonStyles = () => [
   tw`overflow-hidden select-none px-8 py-2 rounded flex items-center justify-center outline-none transform duration-75 text-white hocus:(scale-105 text-yellow-400)`,
 ]
 
-const handleButtonSize = ({ size }: ButtonStyleProps) => {
+export const handleButtonSize = ({ size }: ButtonStyleProps) => {
   if (size === 'small') return tw`text-sm`
 
   if (size === 'medium') return tw`text-lg`
@@ -21,7 +21,7 @@ const handleButtonSize = ({ size }: ButtonStyleProps) => {
   if (size === 'large') return tw`text-2xl`
 }
 
-const handleButtonVsTextOnly = ({ color, variant }: ButtonStyleProps) => {
+export const handleButtonVsTextOnly = ({ color, variant }: ButtonStyleProps) => {
   if (variant === 'textOnly') {
     if (color === 'white') return tw``
 

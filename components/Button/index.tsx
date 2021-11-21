@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { Btn, BtnA } from './styles'
 import Ripple from './Ripple'
 import { ButtonComponentProps } from './types'
-import { AnimatePresence } from 'framer-motion'
 
 const Button = ({
   children,
@@ -15,9 +14,7 @@ const Button = ({
 }: ButtonComponentProps) => {
   const [componentRendered, setComponentRendered] = React.useState(false)
 
-  const RippleContainer = () => (
-    <AnimatePresence>{componentRendered && <Ripple />}</AnimatePresence>
-  )
+  const RippleContainer = () => (componentRendered ? <Ripple /> : <></>)
 
   React.useEffect(() => {
     setComponentRendered(true)

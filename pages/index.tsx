@@ -1,5 +1,7 @@
 import tw from 'twin.macro'
-import { Button, Logo } from '../components' 
+import { Button, Logo } from '../components'
+import IconButton from '../components/IconButton/styles'
+import { AiOutlineUser } from 'react-icons/ai'
 
 const styles = {
   // Move long class sets out of jsx to keep it scannable
@@ -21,6 +23,9 @@ const App = () => (
       <Button href="" variant="textOnly">
         Text Only
       </Button>
+      <IconButton>
+        <AiOutlineUser />
+      </IconButton>
     </div>
     <Logo />
   </div>
