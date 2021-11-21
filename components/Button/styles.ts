@@ -2,7 +2,7 @@ import tw, { styled, css } from 'twin.macro'
 import { ButtonStyleProps } from './types'
 
 const generalButtonStyles = () => [
-  tw`flex items-center justify-center outline-none transform duration-75 text-white hocus:(scale-105 text-yellow-400)`,
+  tw`overflow-hidden select-none px-8 py-2 rounded flex items-center justify-center outline-none transform duration-75 text-white hocus:(scale-105 text-yellow-400)`,
 ]
 
 const handleButtonSize = ({ size }: ButtonStyleProps) => {
@@ -20,7 +20,7 @@ const handleButtonVsTextOnly = ({ color, variant }: ButtonStyleProps) => {
     if (color === 'black') return tw``
   }
 
-  return tw`px-8 py-2 rounded`
+  return tw``
 }
 
 const handleButtonVariant = ({ variant }: ButtonStyleProps) => {
@@ -43,10 +43,9 @@ const handleAllButtonStyles = () => [
   generalButtonStyles,
   handleButtonVariant,
   handleButtonVsTextOnly,
-  handleButtonSize,
-  // tw`relative overflow-hidden text-white bg-[#6200ee] px-8 py-4 text-2xl outline-none border-0 rounded cursor-pointer shadow-[0 0 0.5rem rgba(0, 0, 0, 0.3)]`,
+  handleButtonSize, 
   css`
-    /* -webkit-tap-highlight-color: transparent; */
+    -webkit-tap-highlight-color: transparent;
     @keyframes ripple {
       to {
         transform: scale(4);
@@ -56,26 +55,7 @@ const handleAllButtonStyles = () => [
   `,
 ]
 
-interface RippleProps {
-  size: number
-  left: number
-  top: number
-}
-
-const Ripple = styled.span`
-  width: ${(props: RippleProps) => props.size}px;
-  height: ${(props: RippleProps) => props.size}px;
-  left: ${(props: RippleProps) => props.left}px;
-  top: ${(props: RippleProps) => props.top}px;
-
-  position: absolute;
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ripple 600ms linear;
-  background-color: rgba(255, 255, 255, 0.7);
-`
-
 const Btn = styled.button(handleAllButtonStyles)
 const BtnA = styled.a(handleAllButtonStyles)
 
-export { Btn, BtnA, Ripple }
+export { Btn, BtnA }

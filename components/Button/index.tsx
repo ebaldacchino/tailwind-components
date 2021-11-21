@@ -1,6 +1,8 @@
 import Link from 'next/link'
-import { Btn, BtnA, Ripple } from './styles'
+import { Btn, BtnA } from './styles'
+import Ripple from './Ripple'
 import { ButtonComponentProps } from './types'
+import { useEffect, useState } from 'react'
 
 const Button = ({
   children,
@@ -10,6 +12,12 @@ const Button = ({
   variant = 'primary',
   color = 'white',
 }: ButtonComponentProps) => {
+  const [componentRendered, setComponentRendered] = useState(false)
+
+  useEffect(() => {
+    setComponentRendered(true)
+  }, [])
+
   const props = { color, onClick, size, variant }
 
   if (href)
@@ -17,13 +25,13 @@ const Button = ({
       <Link href={href} passHref>
         <BtnA {...props}>
           {children}
-          <Ripple size={10} left={10} top={10} />
+          {componentRendered && <Ripple />}
         </BtnA>
       </Link>
     )
   return (
     <Btn {...props}>
-      {children} <Ripple size={10} left={10} top={10} />
+      {children} {componentRendered && <Ripple />}
     </Btn>
   )
 }

@@ -1,22 +1,14 @@
 import React, { useState, useLayoutEffect } from 'react'
 import tw, { styled } from 'twin.macro'
 
-interface Ripple {
-  duration: number
-  color: string
+interface RippleProps {
+  x: number
+  y: number
+  size: number
 }
 
 const RippleContainer = styled.div`
-  ${tw`absolute top-0 right-0 bottom-0 left-0`}
-  span {
-    transform: scale(0);
-    border-radius: 100%;
-    position: absolute;
-    opacity: 0.75;
-    background-color: ${props => props.color};
-    animation-name: ripple;
-    animation-duration: ${props => props.duration}ms;
-  }
+  ${tw`absolute inset-0`}
   @keyframes ripple {
     to {
       opacity: 0;
@@ -25,9 +17,18 @@ const RippleContainer = styled.div`
   }
 `
 
-const useDebouncedRippleCleanUp = (rippleCount, duration, cleanUpFunction) => {
+const Ripple = styled.span`
+  ${tw`absolute rounded-[100%] opacity-25 bg-white animate-[ripple 850ms]`}
+  transform: scale(0);
+  left: ${props => props.x}px;
+  top: ${props => props.y}px;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+`
+
+const useDebouncedRippleCleanUp = (rippleCount: number, duration: number, cleanUpFunction: Function) => {
   useLayoutEffect(() => {
-    let bounce = null
+    let bounce: any = null
     if (rippleCount > 0) {
       clearTimeout(bounce)
       bounce = setTimeout(() => {
@@ -39,50 +40,48 @@ const useDebouncedRippleCleanUp = (rippleCount, duration, cleanUpFunction) => {
   }, [rippleCount, duration, cleanUpFunction])
 }
 
-const Ripple = ({ duration = 850, color = '#fff' }) => {
-  const [rippleArray, setRippleArray] = useState([])
+const Ripples = ({ duration = 850 }) => {
+  const [rippleArray, setRippleArray]: [RippleProps[], any] = useState([])
 
   useDebouncedRippleCleanUp(rippleArray.length, duration, () => {
     setRippleArray([])
   })
 
-  const addRipple = event => {
-    const rippleContainer = event.currentTarget.getBoundingClientRect()
-    const size =
-      rippleContainer.width > rippleContainer.height
-        ? rippleContainer.width
-        : rippleContainer.height
-    const x = event.pageX - rippleContainer.x - size / 2
-    const y = event.pageY - rippleContainer.y - size / 2
-    const newRippleArray = {
+  const addRipple = (e: any) => {
+    const {
+      width,
+      height,
+      x: left,
+      y: top,
+    } = e.currentTarget.getBoundingClientRect()
+    const size = width > height ? width : height
+    const x = e.pageX - left - size / 2
+    const y = e.pageY - top - size / 2
+    const newRipple: RippleProps = {
       x,
       y,
       size,
     }
 
-    setRippleArray([...rippleArray, newRippleArray])
+    setRippleArray((prevState: RippleProps[]) => [...prevState, newRipple])
   }
 
+//   const removeRipples = () => {
+//     setTimeout(() => {
+//       setRippleArray([])
+//     }, 3000)
+//   }
+
   return (
-    <RippleContainer duration={duration} color={color} onMouseDown={addRipple}>
+    <RippleContainer onPointerDown={addRipple}
+    //  onPointerUp={removeRipples}
+    >
       {rippleArray.length > 0 &&
-        rippleArray.map((ripple, index) => {
-          return (
-            <span
-              key={'span' + index}
-              style={{
-                top: ripple.y,
-                left: ripple.x,
-                width: ripple.size,
-                height: ripple.size,
-              }}
-            />
-          )
-        })}
+        rippleArray.map((ripple, index) => (
+          <Ripple key={'span' + index} {...ripple} />
+        ))}
     </RippleContainer>
   )
 }
 
-export default Ripple
-
-// https://github.com/rohanfaiyazkhan/react-material-design-ripple-effect/blob/master/src/index.js
+export default Ripples
