@@ -1,8 +1,9 @@
+import React from 'react'
 import Link from 'next/link'
 import { Btn, BtnA } from './styles'
 import Ripple from './Ripple'
 import { ButtonComponentProps } from './types'
-import { useEffect, useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
 
 const Button = ({
   children,
@@ -12,9 +13,13 @@ const Button = ({
   variant = 'primary',
   color = 'white',
 }: ButtonComponentProps) => {
-  const [componentRendered, setComponentRendered] = useState(false)
+  const [componentRendered, setComponentRendered] = React.useState(false)
 
-  useEffect(() => {
+  const RippleContainer = () => (
+    <AnimatePresence>{componentRendered && <Ripple />}</AnimatePresence>
+  )
+
+  React.useEffect(() => {
     setComponentRendered(true)
   }, [])
 
@@ -25,13 +30,14 @@ const Button = ({
       <Link href={href} passHref>
         <BtnA {...props}>
           {children}
-          {componentRendered && <Ripple />}
+          <RippleContainer />
         </BtnA>
       </Link>
     )
   return (
     <Btn {...props}>
-      {children} {componentRendered && <Ripple />}
+      {children}
+      <RippleContainer />
     </Btn>
   )
 }

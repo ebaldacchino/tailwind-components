@@ -1,11 +1,11 @@
-import React, { useState, useLayoutEffect } from 'react'
-import tw, { styled } from 'twin.macro'
+import React from 'react'
+import tw, { styled } from 'twin.macro' 
 
 interface RippleProps {
   x: number
   y: number
   size: number
-}
+} 
 
 const RippleContainer = styled.div`
   ${tw`absolute inset-0`}
@@ -25,22 +25,22 @@ const useDebouncedRippleCleanUp = (
   duration: number,
   cleanUpFunction: Function,
 ) => {
-  useLayoutEffect(() => {
+  React.useLayoutEffect(() => {
     let bounce: any = null
     if (rippleCount > 0) {
-      clearTimeout(bounce) 
-      bounce = setTimeout(() => { 
+      clearTimeout(bounce)
+      bounce = setTimeout(() => {
         cleanUpFunction()
         return clearTimeout(bounce)
       }, duration * 4)
     } else {
       return clearTimeout(bounce)
-    } 
+    }
   }, [rippleCount, duration, cleanUpFunction])
 }
 
 const Ripples = ({ duration = 850 }) => {
-  const [rippleArray, setRippleArray]: [RippleProps[], any] = useState([])
+  const [rippleArray, setRippleArray]: [RippleProps[], any] = React.useState([])
 
   useDebouncedRippleCleanUp(rippleArray.length, duration, () => {
     setRippleArray([])
@@ -63,12 +63,10 @@ const Ripples = ({ duration = 850 }) => {
     }
 
     setRippleArray((prevState: RippleProps[]) => [...prevState, newRipple])
-  } 
+  }
 
   return (
-    <RippleContainer
-      onPointerDown={addRipple} 
-    >
+    <RippleContainer onPointerDown={addRipple}>
       {rippleArray.length > 0 &&
         rippleArray.map((ripple, index) => (
           <Ripple key={'span' + index} {...ripple} />
